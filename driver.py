@@ -24,20 +24,26 @@ class KOBOTOUCH348(KOBOTOUCH):
     description = 'Communicate with the Kobo ereaders releases since calibre 4 was released. Currently supports the Kobo Elipsa, Kobo Libra 2, Kobo Nia and Kobo Sage. DO NOT use with anything other than calibre v3.48'
 
     minimum_calibre_version = (3, 48, 0)
-    version = (1, 0, 2)
+    version = (1, 0, 3)
 
     supported_dbversion             = 166
     max_supported_fwversion         = (4, 31, 19075)
     min_elipsa_fwversion            = (4, 28, 17820)
     min_libra2_fwversion            = (4, 29, 18730)
     min_sage_fwversion              = (4, 29, 18730)
+    min_clara2e_fwversion           = (4, 33, 19759)
 
+    CLARA_2E_PRODUCT_ID = [0x4235]
     ELIPSA_PRODUCT_ID   = [0x4233]
     LIBRA2_PRODUCT_ID   = [0x4234]
     NIA_PRODUCT_ID      = [0x4230]
     SAGE_PRODUCT_ID     = [0x4231]
-    PRODUCT_ID          = ELIPSA_PRODUCT_ID + LIBRA2_PRODUCT_ID + NIA_PRODUCT_ID + SAGE_PRODUCT_ID + KOBOTOUCH.PRODUCT_ID
+    PRODUCT_ID          = ELIPSA_PRODUCT_ID + LIBRA2_PRODUCT_ID + NIA_PRODUCT_ID + SAGE_PRODUCT_ID + CLARA_2E_PRODUCT_ID + \
+                          KOBOTOUCH.PRODUCT_ID
     debug_print("KOBOTOUCH348: PRODUCT_ID= [%s]" % (", ".join(hex(n) for n in PRODUCT_ID)))
+    
+    def isClara2E(self):
+        return self.detected_device.idProduct in self.CLARA_2E_PRODUCT_ID
 
     def isElipsa(self):
         return self.detected_device.idProduct in self.ELIPSA_PRODUCT_ID
@@ -52,7 +58,9 @@ class KOBOTOUCH348(KOBOTOUCH):
         return self.detected_device.idProduct in self.SAGE_PRODUCT_ID
 
     def cover_file_endings(self):
-        if self.isElipsa():
+        if self.isClara2E():
+            _cover_file_endings = self.GLO_HD_COVER_FILE_ENDINGS
+        elif self.isElipsa():
             _cover_file_endings = self.AURA_ONE_COVER_FILE_ENDINGS
         elif self.isLibra2():
             _cover_file_endings = self.LIBRA_H2O_COVER_FILE_ENDINGS
@@ -66,7 +74,9 @@ class KOBOTOUCH348(KOBOTOUCH):
         return _cover_file_endings
     
     def set_device_name(self):
-        if self.isElipsa():
+        if self.isClara2E():
+            device_name = 'Kobo Clara 2E'
+        elif self.isElipsa():
             device_name = 'Kobo Elipsa'
         elif self.isLibra2():
             device_name = 'Kobo Libra 2'
