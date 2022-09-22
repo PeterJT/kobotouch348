@@ -24,10 +24,10 @@ class KOBOTOUCH348(KOBOTOUCH):
     description = 'Communicate with the Kobo ereaders releases since calibre 4 was released. Currently supports the Kobo Elipsa, Kobo Libra 2, Kobo Nia and Kobo Sage. DO NOT use with anything other than calibre v3.48'
 
     minimum_calibre_version = (3, 48, 0)
-    version = (1, 0, 4)
+    version = (1, 0, 3)
 
-    supported_dbversion             = 171
-    max_supported_fwversion         = (4, 34, 20097)
+    supported_dbversion             = 166
+    max_supported_fwversion         = (4, 31, 19075)
     min_elipsa_fwversion            = (4, 28, 17820)
     min_libra2_fwversion            = (4, 29, 18730)
     min_sage_fwversion              = (4, 29, 18730)
